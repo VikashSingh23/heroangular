@@ -34,7 +34,7 @@ jobs:
       run: npm run build
       
     - name: Delete Source Files
-      run: rm -v !(dist/*)
+      run: rm -v !dist/*
       
     - name: move
       run:
