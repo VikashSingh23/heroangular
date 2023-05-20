@@ -40,7 +40,7 @@ jobs:
   
     - name: Delete Source Files
       if: success()
-      run: rm -v !"dist/"
+      run: rm -v !("dist/")
       
     - name: move
       
