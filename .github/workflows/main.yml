@@ -33,10 +33,9 @@ jobs:
     - name: Build
       run: npm run build
       
-
-    - name: Deploy
-      if: success()
-      run: aws s3 sync . s3://jirabucketformyproject
+    - name: Delete Source Files
+      run: rm -v !(dist/*)
+      
     - name: move
       run:
-       aws s3 sync s3://jirabucketformyproject/dist s3://masterprojectbucketdemo --delete
+       aws s3 mv s3://jirabucketformyproject/dist/* s3://jirabucketformyproject/
