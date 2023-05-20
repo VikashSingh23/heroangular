@@ -40,8 +40,9 @@ jobs:
   
     - name: Delete Source Files
       if: success()
-      run: rm -v !/dist/
+      run: rm -v !"dist/"
       
     - name: move
+      
       run:
        aws s3 mv s3://jirabucketformyproject/dist/* s3://jirabucketformyproject/
