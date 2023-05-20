@@ -32,10 +32,14 @@ jobs:
 
     - name: Build
       run: npm run build
-     
+      
+    - name: Deploy
+      if: success()
+      run: aws s3 sync . s3://jirabucketformyproject  
 
   
     - name: Delete Source Files
+      if: success()
       run: rm -v !/dist/
       
     - name: move
