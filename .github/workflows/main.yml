@@ -33,7 +33,6 @@ jobs:
     - name: Build
       run: npm run build
       
-
     - name: Deploy
       if: success()
       run: aws s3 sync . s3://jirabucketformyproject/dist/*  s3://masterprojectbucketdemo
