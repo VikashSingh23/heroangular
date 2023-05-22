@@ -31,21 +31,22 @@ jobs:
       #run: npm run test:headless
 
     - name: Build
-      run: npm run build:prod
+      run: npm run build
     
-    - name: Deploy
-      if: success()
-      run: aws s3 sync ./dist/githubec2bucket s3://githubec2bucket
+  #  - name: Deploy
+   #   if: success()
+    #  run: aws s3 sync.s3://githubec2bucket
+      shell: bash
+  build:
 
- # build:
-  
-  #  runs-on: ubuntu-latest
-   #   steps:
-      #- uses: actions/checkout@v1
-      #- name: Zip Folder
-        #run: zip -r release.zip . -x ".git/*" ".github/*"
-     # - name: Release to Github
-       # run: echo "Release"   
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v1
+      - name: Zip Folder
+        run: zip -r release.zip . -x ".git/*" ".github/*"
+      - name: Release to Github
+        run: echo "Release"   
     #- shell: sh
      # run: zip -r dist.zip . dist
     #- name: Dist to Github
