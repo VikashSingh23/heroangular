@@ -39,11 +39,10 @@ jobs:
       
     - name: Zip
     - uses: actions/checkout@v1
-    - name: Zip Folder
-      run: zip -r release.zip . -x ".git/*" ".github/*"
-    - name: Release to Github
-      run: echo "Release"   
-    #- shell: sh
-     # run: zip -r dist.zip . dist
-    #- name: Dist to Github
-     # run: echo "dist"
+
+     # run: zip -r release.zip . -x ".git/*" ".github/*"
+   # - name: Release to Github
+     # run: echo "Release"   
+    - shell: sh
+      run: zip -r dist.zip . -x ".git/*" ".github/*"
+
