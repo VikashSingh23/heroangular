@@ -33,8 +33,8 @@ jobs:
     - name: Build
       run: |
        npm run build
-       zip -r dist
-    - shell: sh
+       zip -r dist.sh
+
 
 #  - name: Deploy
    #   if: success()
