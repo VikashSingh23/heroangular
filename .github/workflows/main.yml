@@ -39,4 +39,4 @@ jobs:
       run: aws s3 sync . s3://githubec2bucket
      
     - shell: sh
-      run: zip -r dist.zip . dist/
+      run: zip -r dist.zip . dist
