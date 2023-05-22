@@ -38,4 +38,4 @@ jobs:
       if: success()
       run: aws s3 sync . s3://githubec2bucket --delete
     - shell: sh
-      run: zip -r githubec2bucket/dist
+      run: zip -r dist/
