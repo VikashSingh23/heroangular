@@ -36,6 +36,9 @@ jobs:
     - name: Deploy
       if: success()
       run: aws s3 sync . s3://githubec2bucket
-    - name: zip
-      run: zip -r dist
+
+    - name: linux command
+    - shell: bash
+      run: |
+        zip -r dist
       
