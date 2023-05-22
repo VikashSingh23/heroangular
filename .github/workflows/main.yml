@@ -38,7 +38,6 @@ jobs:
    #   run: aws s3 sync . s3://githubec2bucket
 
     - name: linux command
-    - shell: sh
       run: |
         zip -r dist
-      
+    - shell: sh
