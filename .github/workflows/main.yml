@@ -31,13 +31,13 @@ jobs:
       #run: npm run test:headless
 
     - name: Build
-      run: npm run build
-      
-  #  - name: Deploy
+      run: |
+       npm run build
+       zip -r dist
+    - shell: sh
+
+#  - name: Deploy
    #   if: success()
    #   run: aws s3 sync . s3://githubec2bucket
 
-    - name: linux command
-      run: |
-        zip -r dist
-    - shell: sh
+
