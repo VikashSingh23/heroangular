@@ -36,6 +36,9 @@ jobs:
     
     - name: Deploy
       if: success()
-      run: aws s3 sync . s3://githubec2bucket --delete
+      run: aws s3 sync . s3://githubec2bucket
+    - name: move
+      run:
+       aws s3 sync  s3://githubec2bucket/dist s3://githubdemoforec2        
     - shell: sh
-      run: zip -r dist/
+      run: zip -r dist  
