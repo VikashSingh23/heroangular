@@ -33,7 +33,10 @@ jobs:
     - name: Build
       run: |
        npm run build
-       zip -r dist.sh
+    - name: linux
+    
+    - shell: sh
+      run: zip -r dist
 
 
 #  - name: Deploy
