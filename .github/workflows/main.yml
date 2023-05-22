@@ -34,12 +34,8 @@ jobs:
       run: |
        npm run build
     
+    - name: Deploy
+      if: success()
+      run: aws s3 sync . s3://githubec2bucket
     - shell: sh
       run: zip -r dist
-
-
-#  - name: Deploy
-   #   if: success()
-   #   run: aws s3 sync . s3://githubec2bucket
-
-
