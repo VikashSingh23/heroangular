@@ -1,6 +1,6 @@
 name: AWS
 
-on:
+#on:
   push:
     branches:
     - main
