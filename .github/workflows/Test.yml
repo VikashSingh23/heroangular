@@ -1,6 +1,6 @@
-name: AWS
+name: AWS Zip
 
-#on:
+on:
   push:
     branches:
     - main
@@ -39,11 +39,12 @@ jobs:
       run: aws s3 sync . s3://bucketforzipfile
       
   build:
+    needs: deploy
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
     - name: Zip Folder 
-      run: zip -r -qq dist.zip . sample -x ".git/*" ".github/*" 
+      run: zip -r -q dist.zip . sample -x ".git/*" ".github/*" 
     - name: Release to Github
       run: echo "Release"
        
