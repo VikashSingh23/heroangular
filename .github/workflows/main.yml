@@ -38,7 +38,7 @@ jobs:
       run: aws s3 sync . s3://bucketforzipfile
        
 
-    - uses: vikashsingh23/action-zip@v1
+    - uses: vikashsingh23/action-zip@main
       with:
        files: dist/ index.html
        recursive: false
