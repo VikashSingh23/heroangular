@@ -41,8 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Zip Folder
-      if: build   
+    - name: Zip Folder 
       run: zip -r dist.zip . sample -x ".git/*" ".github/*"
     - name: Release to Github
       run: echo "Release"
