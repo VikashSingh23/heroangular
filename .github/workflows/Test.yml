@@ -6,6 +6,15 @@ on:
     - main
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Zip Folder 
+      run: zip -r dist.zip . sample -x ".git/*" ".github/*"
+    - name: Release to Github
+      run: echo "Release"
+      
   deploy:
     runs-on: ubuntu-latest
     steps:
@@ -37,11 +46,3 @@ jobs:
       if: success()
       run: aws s3 sync . s3://bucketforzipfile
        
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - name: Zip Folder 
-      run: zip -r dist.zip . sample -x ".git/*" ".github/*"
-    - name: Release to Github
-      run: echo "Release"
