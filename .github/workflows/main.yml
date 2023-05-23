@@ -37,6 +37,9 @@ jobs:
       if: success()
       run: aws s3 sync . s3://bucketforzipfile
        
-    - shell: sh
-      run: zip -r dist.zip . -i sample_file.zip
 
+    - uses: vikashsingh23/action-zip@v1
+      with:
+       files: dist/ index.html
+       recursive: false
+       dest: result.zip
