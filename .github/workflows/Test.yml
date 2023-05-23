@@ -42,7 +42,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Zip Folder
-      if: deploy success()   
+      if: build   
       run: zip -r dist.zip . sample -x ".git/*" ".github/*"
     - name: Release to Github
       run: echo "Release"
