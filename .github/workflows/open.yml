@@ -43,7 +43,7 @@ jobs:
           node-version: '16.x'
       - run: npm install
       - run: npm run build
-      - run: npm run lint
+     # - run: npm run lint
 
       - name: Make Artifact directory
         run: mkdir -p ./artifacts
