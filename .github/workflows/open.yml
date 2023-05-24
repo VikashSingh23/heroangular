@@ -6,7 +6,7 @@ on:
     - main
 
 env:
-  BUCKET_NAME : "bucketforzipfile"
+  BUCKET_NAME : "front-test-s3-bucket"
   AWS_REGION : "ap-south-1"
   GITHUB_REF: "main"
 
@@ -28,14 +28,14 @@ jobs:
           role-session-name: GitHub-Action-Role
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Extract branch name
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
-      - name: Extract commit hash
-        shell: bash
-        run: echo "##[set-output name=commit_hash;]$(echo "$GITHUB_SHA")"
-        id: extract_hash          
+      #- name: Extract branch name
+      #  shell: bash
+       # run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+       # id: extract_branch
+     # - name: Extract commit hash
+     #   shell: bash
+       # run: echo "##[set-output name=commit_hash;]$(echo "$GITHUB_SHA")"
+       # id: extract_hash          
       
       - name: Use Node.js
         uses: actions/setup-node@v3
@@ -52,4 +52,4 @@ jobs:
       - name:  Copy build to S3
         run: |
           zip -r ./dist.zip . -x node_modules/**\* .git/**\* .guthub/**\* src/**\* e2e/**\*        
-          aws s3 sync  ${GITHUB_WORKSPACE}/dist/ s3://${{ env.BUCKET_NAME }}
+          aws s3 sync  ${env.BUCKET_NAM}/dist/ s3://${{ env.BUCKET_NAME }}
