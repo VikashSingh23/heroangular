@@ -45,7 +45,7 @@ jobs:
      # - run: npm run lint
 
       - name: Make Artifact directory
-        run: mkdir -p ./artifacts
+        run: mkdir -p ./artifacts/dist
 
       # Copy build directory to S3
       - name:  Copy build to S3
