@@ -1,43 +1,53 @@
-name: AWS S3
+name: Build and Deploy
 
-#on:
+on:
   push:
     branches:
     - main
 
+env:
+  BUCKET_NAME : "front-test-s3-bucket"
+  AWS_REGION : "ap-south-1"
+  GITHUB_REF: "main"
+
+
 jobs:
-  deploy:
+  build:
+    name: Build and Package
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-south-1
+      - uses: actions/checkout@v3
 
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::426707758245:role/OpenIDConnection
+          role-session-name: GitHub-Action-Role
+          aws-region: ${{ env.AWS_REGION }}
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: 16
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
     #- name: Run tests
       #run: npm run test:headless
 
-    - name: Build
-      run: npm run build
+      - name: Build
+        run: npm run build
     
-    - name: Deploy
-      if: success()
-      run: aws s3 sync . s3://bucketforzipfile
+      - name: Deploy
+        if: success()
+        run: aws s3 sync . s3://front-test-s3-bucket
        
-
-    - uses: vikashsingh23/action-zip@main
-      with:
-       args: zip -qq -r dist.zip sample
+ # Copy build directory to S3
+      - name:  Copy build to S3
+        run: |
+          zip -r dist.zip dist -x node_modules/**\* .git/**\* .guthub/**\* src/**\* e2e/**\* *.jason/**\* .editorconfig/**\* .editorconfig/**\*             
+          #aws s3 sync  ${GITHUB_WORKSPACE}/artifacts/dist.zip s3://${{ env.BUCKET_NAME }} 
