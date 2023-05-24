@@ -1,6 +1,6 @@
 name: Build and Deploy
 
-#on:
+on:
   push:
     branches:
     - main
@@ -51,5 +51,5 @@ jobs:
       # Copy build directory to S3
       - name:  Copy build to S3
         run: |
-          zip -r ./artifacts/project.zip . -x node_modules/**\* .git/**\* dist/**\* dist/**\*          
+          zip -r ./artifacts/project.zip . -x node_modules/**\* .git/**\* .guthub/**\* src/**\* e2e/**\*        
           aws s3 sync  ${GITHUB_WORKSPACE}/artifacts s3://${{ env.BUCKET_NAME }}/${{ steps.extract_branch.outputs.branch }}/latest
