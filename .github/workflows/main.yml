@@ -1,6 +1,6 @@
 name: Build and Deploy
 
-on:
+#on:
   push:
     branches:
     - main
@@ -51,6 +51,6 @@ jobs:
         run: |
           zip -r dist.zip dist            
           #aws s3 sync  ${GITHUB_WORKSPACE}/artifacts/dist.zip s3://${{ env.BUCKET_NAME }}
-          aws s3 sync . s3://front-test-s3-bucket
+          aws s3 sync ./dist s3://front-test-s3-bucket/
           cp dist/* .
           #aws s3 sync . s3://front-test-s3-bucket
