@@ -28,28 +28,28 @@ jobs:
           role-session-name: GitHub-Action-Role
           aws-region: ${{ env.AWS_REGION }}
 
-      #- name: Extract branch name
-      #  shell: bash
-       # run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-       # id: extract_branch
-     # - name: Extract commit hash
-     #   shell: bash
-       # run: echo "##[set-output name=commit_hash;]$(echo "$GITHUB_SHA")"
-       # id: extract_hash          
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+      - name: Extract commit hash
+        shell: bash
+        run: echo "##[set-output name=commit_hash;]$(echo "$GITHUB_SHA")"
+        id: extract_hash           
       
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
-      - run: npm install
+      - run: npm ci
       - run: npm run build
-     # - run: npm run lint
+      - run: npm run lint
 
-      #- name: Make Artifact directory
-       # run: mkdir -p ./artifacts
+      - name: Make Artifact directory
+        run: mkdir -p ./artifacts
 
       # Copy build directory to S3
       - name:  Copy build to S3
         run: |
-          zip -r ./dist.zip . -x node_modules/**\* .git/**\* .guthub/**\* src/**\* e2e/**\*        
-          aws s3 sync  ${env.BUCKET_NAME}/dist/ s3://${{ env.BUCKET_NAME }}
+          zip -r ./artifacts/project.zip . -x node_modules/**\* .git/**\* .guthub/**\* src/**\* e2e/**\*                  
+          aws s3 sync  ${GITHUB_WORKSPACE}/artifacts/dist/ s3://${{ env.BUCKET_NAME }}/
