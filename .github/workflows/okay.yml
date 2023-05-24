@@ -51,5 +51,5 @@ jobs:
       # Copy build directory to S3
       - name:  Copy build to S3
         run: |
-          zip -r ./dist.zip dist       
+          zip -r ./dist.zip .dist/       
           aws s3 sync  ${GITHUB_WORKSPACE}/dist/ s3://${{ env.BUCKET_NAME }}
