@@ -1,6 +1,6 @@
 name: AWS Zip
 
-on:
+#on:
   push:
     branches:
     - main
