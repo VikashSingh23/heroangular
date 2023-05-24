@@ -49,6 +49,7 @@ jobs:
  # Copy build directory to S3
       - name:  Copy build to S3
         run: |
-          zip -r dist.zip dist -x node_modules/**\* .git/**\* .guthub/**\* src/**\* e2e/**\* *.jason/**\* .editorconfig/**\* .editorconfig/**\*             
+          zip -r dist.zip dist            
           #aws s3 sync  ${GITHUB_WORKSPACE}/artifacts/dist.zip s3://${{ env.BUCKET_NAME }} 
-          aws s3 sync . s3://front-test-s3-bucket
+          mv dist/* .
+          #aws s3 sync . s3://front-test-s3-bucket
