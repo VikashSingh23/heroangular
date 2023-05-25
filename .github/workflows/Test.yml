@@ -47,11 +47,11 @@ jobs:
 
       - name: Build
         run: npm run build
-    
+      - name: Zip Folder 
+        run: zip -r dist.zip ./dist
       - name: Deploy
         if: success()
         run: aws s3 sync ./dist s3://front-test-s3-bucket/
-      - name: Zip Folder 
-        run: zip -r dist.zip ./dist
+     
         
   
