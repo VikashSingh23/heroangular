@@ -52,5 +52,5 @@ jobs:
 
       - name: Zip Folder 
         run: |
-          zip -r dist.zip  ./dist
-          aws s3 sync  ${GITHUB_WORKSPACE}/dist/ s3://${{ env.BUCKET_NAME }}
+          zip -r dist.zip dist
+          aws s3 sync ./dist/ s3://${{ env.BUCKET_NAME }}
