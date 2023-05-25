@@ -65,4 +65,6 @@ jobs:
         with:
 
           aws_bucket: front-test-s3-bucket
-          source_dir: cypress/reports/Result 
+          source_dir: cypress/reports/Result
+          branch: main
+          folder: dist
