@@ -49,12 +49,8 @@ jobs:
      #   run: mkdir -p ./dist
 
       # Copy build directory to S3
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - name: Zip Folder 
-      run: |
+
+      - name: Zip Folder 
+        run: |
           zip -r dist.zip  ./dist
           aws s3 sync  ${GITHUB_WORKSPACE}/dist/ s3://${{ env.BUCKET_NAME }}
