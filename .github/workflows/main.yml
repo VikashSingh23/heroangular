@@ -43,10 +43,10 @@ jobs:
         run: npm run build
 
       - name:  Copy build to S3
-        run: |
-          zip -r /dist.zip dist            
+        run: |            
           aws s3 sync ./dist s3://front-test-s3-bucket/
-          aws s3 sync ${{ github.workspace }}//dist.zip s3://front-test-s3-bucket/
+          zip -r dist.zip dist  
+          aws s3 sync ${{ github.workspace }}/dist.zip s3://front-test-s3-bucket/
 
 
  
