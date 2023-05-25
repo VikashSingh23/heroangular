@@ -7,44 +7,58 @@ on:
 
 jobs:
       
-  deploy:
+ # deploy:
+  #  runs-on: ubuntu-latest
+  #  steps:
+ #   - name: Configure AWS Credentials
+#      uses: aws-actions/configure-aws-credentials@v1
+#      with:
+ #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+ #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+ #       aws-region: ap-south-1
+  Deploy:
+    name: Build and Package
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-south-1
+      - uses: actions/checkout@v3
 
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::426707758245:role/OpenIDConnection
+          role-session-name: GitHub-Action-Role
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: 16
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+         node-version: 16
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
     #- name: Run tests
       #run: npm run test:headless
 
-    - name: Build
-      run: npm run build
+      - name: Build
+        run: npm run build
     
-    - name: Deploy
-      if: success()
-      run: aws s3 sync ./dist . s3://front-test-s3-bucket/
+      - name: Deploy
+        if: success()
+        run: aws s3 sync ./dist . s3://front-test-s3-bucket/
       
   build:
-    #needs: deploy
+    needs: Deploy
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
     - name: Zip Folder 
-      run: zip -r dist.zip .dist 
+      run: zip -r dist.zip dist 
     - name: Release to Github
       run: echo "Release"
        
