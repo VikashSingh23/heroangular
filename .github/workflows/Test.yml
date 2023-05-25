@@ -39,7 +39,7 @@ jobs:
       - name: Build
         run: npm run build        
       - name: Zip Folder 
-        run: zip -9jpr dist.zip dist/
+        run: zip -jpr dist.zip dist/
         
       - name: Deploy
         if: success()
