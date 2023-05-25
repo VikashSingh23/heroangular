@@ -30,7 +30,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::426707758245:role/OpenIDConnection
           role-session-name: GitHub-Action-Role
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ap-south-1
       - name: Checkout
         uses: actions/checkout@v2
 
