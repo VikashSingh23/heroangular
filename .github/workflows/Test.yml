@@ -43,7 +43,7 @@ jobs:
         
       - name: Deploy
         if: success()
-        run: aws s3 sync s3://front-test-s3-bucket/ . --exclude "node_modules/*" 
+        run: aws s3 sync . s3://front-test-s3-bucket/  --exclude "node_modules/*" 
      
         
   
