@@ -1,6 +1,6 @@
 name: AWS Zip
 
-#on:
+on:
   push:
     branches:
     - main
@@ -36,7 +36,7 @@ jobs:
     
     - name: Deploy
       if: success()
-      run: aws s3 sync . s3://bucketforzipfile
+      run: aws s3 sync ./dist . s3://front-test-s3-bucket/
       
   build:
     #needs: deploy
@@ -44,7 +44,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Zip Folder 
-      run: zip -r dist.zip . .dist -x ".git/*" ".github/*" 
+      run: zip -r dist.zip .dist 
     - name: Release to Github
       run: echo "Release"
        
