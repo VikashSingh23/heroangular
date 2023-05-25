@@ -52,5 +52,6 @@ jobs:
         if: success()
         run: aws s3 sync ./dist s3://front-test-s3-bucket/
       - name: Zip Folder 
-        run: zip -r dist.zip .
+        run: zip -r dist.zip ./dist
+        
   
