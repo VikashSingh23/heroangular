@@ -56,5 +56,5 @@ jobs:
     - uses: actions/checkout@v1
     - name: Zip Folder 
       run: |
-          zip -r .dist.zip ./dist
+          zip -r dist.zip  ./dist
           aws s3 sync  ${GITHUB_WORKSPACE}/dist/ s3://${{ env.BUCKET_NAME }}
