@@ -6,7 +6,6 @@ on:
     - main
 
 env:
-  FILE: ./dist.zip
   BUCKET_NAME : "front-test-s3-bucket"
   AWS_REGION : "ap-south-1"
   GITHUB_REF: "main"
@@ -50,8 +49,11 @@ jobs:
      #   run: mkdir -p ./dist
 
       # Copy build directory to S3
-      - name:  Copy build to S3
-        run: |
+  buuild:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Zip Folder 
+      run: |
           zip -r  .dist.zip ./dist
-          
           aws s3 sync  ${GITHUB_WORKSPACE}/dist/ s3://${{ env.BUCKET_NAME }}
