@@ -1,0 +1,46 @@
+name: Node js
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  Deploy:
+    name: Build and Package
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::426707758245:role/OpenIDConnection
+          role-session-name: GitHub-Action-Role
+          aws-region: ap-south-1
+          
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+         node-version: 16
+
+      - name: Install dependencies
+        run: npm install
+
+    #- name: Run tests
+      #run: npm run test:headless
+
+      - name: Build
+        run: npm run build 
+        
+      - name: Deploy
+        if: success()
+        run: |        
+         aws ec2 sync . ec2://i-0f910d980e7a69b79
+   
