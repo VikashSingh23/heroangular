@@ -1,0 +1,67 @@
+name: Jugad
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+         node-version: 16
+
+      - name: Install dependencies
+        run: npm install
+
+    #- name: Run tests
+      #run: npm run test:headless
+
+      - name: Build
+        run: npm run build        
+      - name: Zip Folder 
+        run: zip -jpr dist.zip dist/
+
+  DeployTest:
+    name: Deploy to Test 
+    needs: [Build]
+    runs-on: ubuntu-latest
+    environment: 
+      name: Development
+      url: ''
+    steps:
+      - name: Deploy to S3
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1 
+      - name: Sync to S3
+        run: |        
+         aws s3 sync . s3://front-test-s3-bucket/  --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
+         aws s3 sync ./dist/ s3://front-test-s3-bucket/
+         
+  DeployProd:
+    name: Deploy to Production 
+    needs: DeployTest
+    runs-on: ubuntu-latest
+    environment: 
+      name: Production
+      url: ''
+    steps:
+      - name: Deploy to S3
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - name: Sync to S3
+        run: |        
+         aws s3 sync . s3://front-prod-s3-bucket/  --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
+         aws s3 sync ./dist/ s3://front-prod-s3-bucket/
