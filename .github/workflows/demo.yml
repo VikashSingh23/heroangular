@@ -54,7 +54,7 @@ jobs:
          aws s3 sync ./dist/ s3://front-test-s3-bucket/
   DeployProd:
     name: Deploy to prod 
-    needs: Build
+    needs: DeployTest
     runs-on: ubuntu-latest
     steps:
       - name: DeployProd
