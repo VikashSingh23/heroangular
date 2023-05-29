@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: 
       name: Development
-      url: ''
+      url: '${{ env.TEST_APP_URL }}'
     steps:
       - name: Deploy to S3
         uses: aws-actions/configure-aws-credentials@v1
@@ -44,7 +44,7 @@ jobs:
       - name: Sync to S3
         run: |        
          aws s3 sync . s3://front-test-s3-bucket/  --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
-         aws s3 sync ./dist/ s3://front-test-s3-bucket/
+         #aws s3 sync ./dist/ s3://front-test-s3-bucket/
          
   DeployProd:
     name: Deploy to Production 
@@ -52,7 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: 
       name: Production
-      url: ''
+      url: '${{ env.PROD_APP_URL }}'
     steps:
       - name: Deploy to S3
         uses: aws-actions/configure-aws-credentials@v1
@@ -64,4 +64,4 @@ jobs:
       - name: Sync to S3
         run: |        
          aws s3 sync . s3://front-prod-s3-bucket/  --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
-         aws s3 sync ./dist/ s3://front-prod-s3-bucket/
+         #aws s3 sync ./dist/ s3://front-prod-s3-bucket/
