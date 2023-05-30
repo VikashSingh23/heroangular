@@ -22,6 +22,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Zip Folder
+        run: zip -jpr dist.zip dist/        
+
 
   DeployTest:
     name: Deploy to Test
@@ -39,7 +42,7 @@ jobs:
           aws-region: ap-south-1
       - name: Sync to S3
         run: |
-          aws s3 sync . s3://front-test-s3-bucket/ --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
+         aws s3 sync ./dist/ s3://front-test-s3-bucket/
 
   DeployProd:
     name: Deploy to Production
@@ -57,4 +60,4 @@ jobs:
           aws-region: ap-south-1
       - name: Sync to S3
         run: |
-          aws s3 sync . s3://front-prod-s3-bucket/ --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
+         aws s3 sync ./dist/ s3://front-test-s3-bucket/
