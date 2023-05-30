@@ -59,7 +59,7 @@ jobs:
                   const fileData = fs.readFileSync(filePath);
                   const s3Params = {
                     ...syncParams,
-                    Key: filePath.replace("dist/", ""),
+                    Key: filePath.replace(process.cwd() + "/", ""),
                     Body: fileData,
                     ContentType: getContentType(filePath),
                   };
@@ -81,7 +81,7 @@ jobs:
               return "application/octet-stream";
             }
 
-            syncDirectory("dist");
+            syncDirectory(process.cwd() + "/dist");
           '
 
   DeployProd:
@@ -118,7 +118,7 @@ jobs:
                   const fileData = fs.readFileSync(filePath);
                   const s3Params = {
                     ...syncParams,
-                    Key: filePath.replace("dist/", ""),
+                    Key: filePath.replace(process.cwd() + "/", ""),
                     Body: fileData,
                     ContentType: getContentType(filePath),
                   };
@@ -140,5 +140,5 @@ jobs:
               return "application/octet-stream";
             }
 
-            syncDirectory("dist");
+            syncDirectory(process.cwd() + "/dist");
           '
