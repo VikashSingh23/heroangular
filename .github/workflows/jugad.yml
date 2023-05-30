@@ -42,12 +42,11 @@ jobs:
       - name: Sync to S3
         run: |
           aws s3 sync . s3://front-test-s3-bucket/ --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
-      - name: Set Output
-        run: echo "TEST_APP_URL=http://front-test-s3-bucket.s3.amazonaws.com >> $GITHUB_ENV"
+
 
   DeployProd:
     name: Deploy to Production
-    needs: DeployTest
+    needs: [DeployTest , Build]
     runs-on: ubuntu-latest
     environment:
       name: Production
@@ -62,5 +61,4 @@ jobs:
       - name: Sync to S3
         run: |
           aws s3 sync . s3://front-prod-s3-bucket/ --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
-      - name: Set Output
-        run: echo "PROD_APP_URL=http://front-prod-s3-bucket.s3.amazonaws.com >> $GITHUB_ENV"
+
