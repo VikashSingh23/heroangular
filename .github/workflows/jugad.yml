@@ -23,8 +23,12 @@ jobs:
         run: npm run build
 
       - name: Zip Folder
-        run: zip -jpr dist.zip dist/        
-
+        run: zip -jpr dist.zip dist/  
+        
+      - name: aws sdk
+        run: |
+         npm install aws-sdk
+         node -e '
 
   DeployTest:
     name: Deploy to Test
@@ -35,6 +39,7 @@ jobs:
       url: https://github.com/VikashSingh23/heroangular/deployments
     steps:
       - name: Deploy to S3
+
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
