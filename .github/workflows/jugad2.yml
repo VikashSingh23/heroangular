@@ -3,7 +3,7 @@ name: CI + CD
 on:
   push:
     branches:
-    - main
+      - main
 
 jobs:
   Build:
@@ -21,7 +21,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-         node-version: 16
+          node-version: 16
 
       - name: Install dependencies
         run: npm install
@@ -32,9 +32,11 @@ jobs:
       - name: Zip Folder
         run: zip -jpr dist.zip dist/
 
+      - name: Set Build Output
+        run: echo "BUILD_ID=$(date +%s)" >> $GITHUB_ENV
+
   DeployTest:
     name: Deploy to Test
-    
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: [Build]
     runs-on: ubuntu-latest
