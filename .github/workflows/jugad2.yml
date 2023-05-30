@@ -26,7 +26,8 @@ jobs:
 
 
   DeployProd:
-    name: Deploy to Production 
+    name: Deploy to Production
+    if: github.event.ref == 'refs/heads/main'
     needs: [DeployTest]
     runs-on: ubuntu-latest
     environment: 
