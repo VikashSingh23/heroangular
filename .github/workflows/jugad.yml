@@ -25,6 +25,7 @@ jobs:
       - name: Zip Folder
         run: zip -jpr dist.zip dist/        
 
+
   DeployTest:
     name: Deploy to Test
     needs: [Build]
@@ -34,56 +35,14 @@ jobs:
       url: https://github.com/VikashSingh23/heroangular/deployments
     steps:
       - name: Deploy to S3
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+      - name: Sync to S3
         run: |
-          npm install aws-sdk
-          node -e '
-            const AWS = require("aws-sdk");
-            const fs = require("fs");
-
-            const s3 = new AWS.S3({ region: "ap-south-1" });
-            
-            const syncParams = {
-              Bucket: "front-prod-s3-bucket",
-              Prefix: "dist/",
-              ACL: "public-read",
-              Exclude: ["node_modules/*", "src/*", "e2e/*", ".github/*"],
-            };
-
-            function syncDirectory(dirPath) {
-              const files = fs.readdirSync(dirPath, { withFileTypes: true });
-              files.forEach(file => {
-                const filePath = dirPath + "/" + file.name;
-                if (file.isDirectory()) {
-                  syncDirectory(filePath);
-                } else {
-                  const fileData = fs.readFileSync(filePath);
-                  const s3Params = {
-                    ...syncParams,
-                    Key: filePath.replace(process.cwd() + "/", ""),
-                    Body: fileData,
-                    ContentType: getContentType(filePath),
-                  };
-                  s3.putObject(s3Params, (error, data) => {
-                    if (error) {
-                      console.error("Error uploading file", filePath, error);
-                    } else {
-                      console.log("Successfully uploaded file", filePath);
-                    }
-                  });
-                }
-              });
-            }
-
-            function getContentType(filePath) {
-              // Implement logic to determine the content type of the file based on the file extension
-              // Example: For JavaScript files, return "application/javascript"
-              // For simplicity, you can set a default content type like "application/octet-stream"
-              return "application/octet-stream";
-            }
-
-            syncDirectory(process.cwd() + "/dist");
-          '
-
+         aws s3 sync . s3://front-prod-s3-bucket/  --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
   DeployProd:
     name: Deploy to Production
     needs: [DeployTest, Build]
@@ -93,52 +52,11 @@ jobs:
       url: https://github.com/VikashSingh23/heroangular/deployments
     steps:
       - name: Deploy to S3
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+      - name: Sync to S3
         run: |
-          npm install aws-sdk
-          node -e '
-            const AWS = require("aws-sdk");
-            const fs = require("fs");
-
-            const s3 = new AWS.S3({ region: "ap-south-1" });
-            
-            const syncParams = {
-              Bucket: "front-prod-s3-bucket",
-              Prefix: "dist/",
-              ACL: "public-read",
-              Exclude: ["node_modules/*", "src/*", "e2e/*", ".github/*"],
-            };
-
-            function syncDirectory(dirPath) {
-              const files = fs.readdirSync(dirPath, { withFileTypes: true });
-              files.forEach(file => {
-                const filePath = dirPath + "/" + file.name;
-                if (file.isDirectory()) {
-                  syncDirectory(filePath);
-                } else {
-                  const fileData = fs.readFileSync(filePath);
-                  const s3Params = {
-                    ...syncParams,
-                    Key: filePath.replace(process.cwd() + "/", ""),
-                    Body: fileData,
-                    ContentType: getContentType(filePath),
-                  };
-                  s3.putObject(s3Params, (error, data) => {
-                    if (error) {
-                      console.error("Error uploading file", filePath, error);
-                    } else {
-                      console.log("Successfully uploaded file", filePath);
-                    }
-                  });
-                }
-              });
-            }
-
-            function getContentType(filePath) {
-              // Implement logic to determine the content type of the file based on the file extension
-              // Example: For JavaScript files, return "application/javascript"
-              // For simplicity, you can set a default content type like "application/octet-stream"
-              return "application/octet-stream";
-            }
-
-            syncDirectory(process.cwd() + "/dist");
-          '
+         aws s3 sync . s3://front-prod-s3-bucket/  --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
