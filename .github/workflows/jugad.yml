@@ -22,21 +22,14 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Zip Folder
-        run: zip -jpr dist.zip dist/
-
-      - name: Set Build Output
-        id: build-output
-        run: echo "::set-output name=dist-zip::dist.zip"
 
   DeployTest:
     name: Deploy to Test
     needs: [Build]
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
     environment:
       name: Development
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: https://github.com/VikashSingh23/heroangular/deployments
     steps:
       - name: Deploy to S3
         uses: aws-actions/configure-aws-credentials@v1
@@ -54,6 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: Production
+      url: https://github.com/VikashSingh23/heroangular/deployments
     steps:
       - name: Deploy to S3
         uses: aws-actions/configure-aws-credentials@v1
