@@ -1,6 +1,6 @@
 name: Jugad
 
-#on:
+on:
   push:
     branches: [main]
 
@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: Development
-      url: ${{ env.TEST_BUCKET_URL }}
+      url: https://github.com/VikashSingh23/heroangular/deployments
     steps:
       - name: Deploy to S3
         uses: aws-actions/configure-aws-credentials@v1
@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: Production
-      url: ${{ env.PROD_BUCKET_URL }}
+      url: https://github.com/VikashSingh23/heroangular/deployments
     steps:
       - name: Deploy to S3
         uses: aws-actions/configure-aws-credentials@v1
