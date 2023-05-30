@@ -6,6 +6,8 @@ on:
 
 jobs:
   Build:
+
+        
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -31,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: Development
-      url: https://github.com/VikashSingh23/heroangular/deployments
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to S3
         uses: aws-actions/configure-aws-credentials@v1
@@ -50,7 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: Production
-      url: https://github.com/VikashSingh23/heroangular/deployments
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to S3
         uses: aws-actions/configure-aws-credentials@v1
