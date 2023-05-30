@@ -42,7 +42,7 @@ jobs:
           aws-region: ap-south-1
       - name: Sync to S3
         run: |
-         aws s3 sync ./dist/ s3://front-test-s3-bucket/
+         aws s3 sync . s3://front-test-s3-bucket/
 
   DeployProd:
     name: Deploy to Production
@@ -60,4 +60,4 @@ jobs:
           aws-region: ap-south-1
       - name: Sync to S3
         run: |
-         aws s3 sync ./dist/ s3://front-test-s3-bucket/
+         aws s3 sync . s3://front-test-s3-bucket/
