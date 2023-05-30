@@ -6,8 +6,6 @@ on:
 
 jobs:
   Build:
-
-        
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -26,6 +24,10 @@ jobs:
 
       - name: Zip Folder
         run: zip -jpr dist.zip dist/
+
+      - name: Set Build Output
+        id: build-output
+        run: echo "::set-output name=dist-zip::dist.zip"
 
   DeployTest:
     name: Deploy to Test
@@ -46,17 +48,14 @@ jobs:
         run: |
           aws s3 sync . s3://front-test-s3-bucket/ --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
 
-
   DeployProd:
     name: Deploy to Production
-    needs: [DeployTest , Build]
+    needs: [DeployTest, Build]
     runs-on: ubuntu-latest
     environment:
       name: Production
-
     steps:
       - name: Deploy to S3
-
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -65,4 +64,3 @@ jobs:
       - name: Sync to S3
         run: |
           aws s3 sync . s3://front-prod-s3-bucket/ --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
-
