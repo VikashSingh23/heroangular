@@ -2,14 +2,15 @@ name: Jugad2
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
-  Build:
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
@@ -25,42 +26,74 @@ jobs:
       - name: Zip Folder
         run: zip -jpr dist.zip dist/
 
-  DeployTest:
-    name: Deploy to Test
-    needs: [Build]
+  deployDev:
+    name: Deploy to Dev
+    needs: build
     runs-on: ubuntu-latest
     environment:
       name: Development
+      url: ${{ secrets.TEST_BUCKET_URL }}
     steps:
-      - name: Deploy to S3
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-south-1
-      - name: Sync to S3
-        run: |
-          aws s3 sync . s3://front-test-s3-bucket/ --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
-      - name: Create environment file
-        run: |
-          echo "TEST_APP_URL=http://front-test-s3-bucket.s3.amazonaws.com" >> $GITHUB_ENV
+          name: dist-zip
 
-  DeployProd:
+      - name: Unzip artifact
+        run: unzip dist.zip
+
+      - name: Configure AWS credentials
+        run: |
+          mkdir -p ~/.aws
+          echo "[default]" > ~/.aws/credentials
+          echo "aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
+          echo "aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
+          echo "[default]" > ~/.aws/config
+          echo "region=ap-south-1" >> ~/.aws/config
+
+      - name: Install AWS CLI
+        run: |
+          sudo apt-get install -y python3-pip
+          pip3 install --user awscli
+
+      - name: Deploy to S3
+        run: |
+          aws s3 sync ./dist/ s3://${{ secrets.TEST_BUCKET_NAME }}/ --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
+
+      - name: Set Environment File
+        run: echo "TEST_APP_URL=https://$({{ secrets.TEST_BUCKET_NAME }}).s3.amazonaws.com" >> $GITHUB_ENV
+
+  deployProd:
     name: Deploy to Production
-    needs: DeployTest
+    needs: deployDev
     runs-on: ubuntu-latest
     environment:
       name: Production
+      url: ${{ secrets.PROD_BUCKET_URL }}
     steps:
-      - name: Deploy to S3
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-south-1
-      - name: Sync to S3
+          name: dist-zip
+
+      - name: Unzip artifact
+        run: unzip dist.zip
+
+      - name: Configure AWS credentials
         run: |
-          aws s3 sync . s3://front-prod-s3-bucket/ --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
-      - name: Create environment file
+          mkdir -p ~/.aws
+          echo "[default]" > ~/.aws/credentials
+          echo "aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
+          echo "aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
+          echo "[default]" > ~/.aws/config
+          echo "region=ap-south-1" >> ~/.aws/config
+
+      - name: Install AWS CLI
         run: |
-          echo "PROD_APP_URL=http://front-prod-s3-bucket.s3.amazonaws.com" >> $GITHUB_ENV
+          sudo apt-get install -y python3-pip
+          pip3 install --user awscli
+
+      - name: Deploy to S3
+        run: |
+          aws s3 sync ./dist/ s3://${{ secrets.PROD_BUCKET_NAME }}/ --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
+
