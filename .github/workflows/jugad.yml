@@ -31,6 +31,7 @@ jobs:
     name: Deploy to Test
     needs: [Build]
     runs-on: ubuntu-latest
+    if: github.event_name == 'push'
     environment:
       name: Development
       url: ${{ steps.deployment.outputs.page_url }}
