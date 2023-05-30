@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -35,14 +35,15 @@ jobs:
       url: https://github.com/VikashSingh23/heroangular/deployments
     steps:
       - name: Deploy to S3
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v3
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
       - name: Sync to S3
         run: |
-         aws s3 sync . s3://front-test-s3-bucket/
+         aws s3 sync . s3://front-prod-s3-bucket/  --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
+
 
   DeployProd:
     name: Deploy to Production
@@ -53,11 +54,12 @@ jobs:
       url: https://github.com/VikashSingh23/heroangular/deployments
     steps:
       - name: Deploy to S3
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v3
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
       - name: Sync to S3
         run: |
-         aws s3 sync . s3://front-test-s3-bucket/
+         aws s3 sync . s3://front-prod-s3-bucket/  --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
+
