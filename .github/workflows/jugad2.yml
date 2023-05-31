@@ -39,8 +39,8 @@ jobs:
       - name: Deploy
         run: |
             $REPOSITORY_VAR
-        env:
-          REPOSITORY_VAR: ${{ vars.REPOSITORY_VAR }}
+        #env:
+          #REPOSITORY_VAR: ${{ vars.REPOSITORY_VAR }}
 
   DeployProd:
     name: Deploy to Production 
