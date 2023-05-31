@@ -3,11 +3,7 @@ name: CI + CD
 on:
   push:
     branches: [ main ]
-    
-env: 
- Deploy_env: Development
- Prod_env: Production
- 
+
 jobs:
   Build:
     runs-on: ubuntu-latest
@@ -30,6 +26,9 @@ jobs:
     name: Deploy to Test 
     needs: [Build]
     runs-on: ubuntu-latest
+    environment: 
+      name: Development
+      #url: https://github.com/VikashSingh23/heroangular/settings/environments/1071081436/edit
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -38,13 +37,18 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
       - name: Deploy
-        run: 
-          aws s3 sync . s3://front-test-s3-bucket/  --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
+        run: |
+            $REPOSITORY_VAR
+        env:
+          REPOSITORY_VAR: ${{ vars.REPOSITORY_VAR }}
 
   DeployProd:
     name: Deploy to Production 
     needs: [DeployTest]
     runs-on: ubuntu-latest
+    environment: 
+      name: Production
+      #url: https://github.com/VikashSingh23/heroangular/settings/environments/1068439192/edit
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
