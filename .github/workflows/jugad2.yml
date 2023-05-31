@@ -37,9 +37,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
       - name: Deploy
-        run: 
-          aws s3 sync . s3://front-test-s3-bucket/  --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
-
+        run: |
+         echo "repository variable : $REPOSITORY_VAR"
+        env:
+          REPOSITORY_VAR: ${{ vars.REPOSITORY_VAR }}
 
   DeployProd:
     name: Deploy to Production 
