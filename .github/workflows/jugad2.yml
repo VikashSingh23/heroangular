@@ -2,13 +2,13 @@ name: CI + CD
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      -main
 
 jobs:
   Build:
     runs-on: ubuntu-latest
-    steps:
-       
+    steps:       
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: 
       name: Development
-      #url: https://github.com/VikashSingh23/heroangular/settings/environments/1071081436/edit
+      url: https://github.com/VikashSingh23/heroangular/settings/environments/1071081436/edit
         
   DeployProd:
     name: Deploy to Production 
