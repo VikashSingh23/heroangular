@@ -30,6 +30,12 @@ jobs:
       name: Development
       #url: https://github.com/VikashSingh23/heroangular/settings/environments/1071081436/edit
     steps:
+      - name: Deploy
+        run: |
+            $REPOSITORY_VAR
+        env:
+          REPOSITORY_VAR: ${{ vars.REPOSITORY_VAR }}
+          
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -37,10 +43,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
       - name: Deploy
-        run: |
-            $REPOSITORY_VAR
-        env:
-          REPOSITORY_VAR: ${{ vars.REPOSITORY_VAR }}
 
   DeployProd:
     name: Deploy to Production 
