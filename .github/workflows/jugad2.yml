@@ -22,9 +22,6 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Zip Folder
-        run: zip -jpr dist.zip dist/
-
   DeployTest:
     name: Deploy to Test 
     needs: [Build]
