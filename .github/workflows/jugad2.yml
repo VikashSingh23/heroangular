@@ -38,7 +38,7 @@ jobs:
           aws-region: ap-south-1
       - name: Deploy
         run: |
-           : $REPOSITORY_VAR
+           "repository variable : $REPOSITORY_VAR"
         env:
           REPOSITORY_VAR: ${{ vars.REPOSITORY_VAR }}
 
