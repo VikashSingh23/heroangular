@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: 
       name: Development
-      url: https://github.com/VikashSingh23/heroangular/settings/environments/1071081436/edit
+      #url: https://github.com/VikashSingh23/heroangular/settings/environments/1071081436/edit
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: 
       name: Production
-      url: https://github.com/VikashSingh23/heroangular/settings/environments/1068439192/edit
+      #url: https://github.com/VikashSingh23/heroangular/settings/environments/1068439192/edit
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
