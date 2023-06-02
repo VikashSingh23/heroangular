@@ -63,7 +63,7 @@ jobs:
       SECRET_VARIABLE: ${{ secrets.PROD_ENV_URL }}
     environment:
       name: Production
-      url: ${{ PROD_ENV_URL }}
+      url: $PROD_ENV_URL
     steps:
       - name: Checkout
         uses: actions/checkout@v2
