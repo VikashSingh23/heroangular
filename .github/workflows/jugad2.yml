@@ -26,9 +26,11 @@ jobs:
     name: Deploy to Test
     needs: [Build]
     runs-on: ubuntu-latest
+    env:
+      SECRET_VARIABLE: ${{ secrets.TEST_ENV_URL }}
     environment:
       name: Development
-      url: ${{ secrets.TEST_ENV_URL }}
+      url : $TEST_ENV_URL
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -57,9 +59,11 @@ jobs:
     name: Deploy to Production
     needs: [DeployTest]
     runs-on: ubuntu-latest
+    env:
+      SECRET_VARIABLE: ${{ secrets.PROD_ENV_URL }}
     environment:
       name: Production
-      url: ${{ secrets.PROD_ENV_URL }}
+      url: ${{ PROD_ENV_URL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
