@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: Development
-      url : https://github.com/VikashSingh23/my-api/blob/main/.github/workflows/node.js.yml
+      url : https://github.com/VikashSingh23/heroangular/settings/environments/1071081436/
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: Production
-      url: https://github.com/VikashSingh23/my-api/blob/main/.github/workflows/node.js.yml
+      url: https://github.com/VikashSingh23/heroangular/settings/environments/1068439192/
     steps:
       - name: Checkout
         uses: actions/checkout@v2
