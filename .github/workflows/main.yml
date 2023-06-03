@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install          
-      - run: npm Build 
+      - run: npm run build 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -27,7 +27,7 @@ jobs:
 
       - name: Deploy to S3
         run: |
-          aws s3 sync . s3://front-test-s3-bucket/           
+          aws s3 sync . s3://testfrontbucketmy/  --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"         
     env:                          
       #DB_Username: ${{ secrets.TEST_DB_USERNAME }}
       #DB_Password: ${{ secrets.TEST_DB_PASSWORD }}
@@ -57,9 +57,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
 
-      - name: Deploy to Test Environment
+      - name: Deploy to S3
         run: |
-          aws s3 sync . s3://front-test-s3-bucket/   
+          aws s3 sync . s3://testfrontbucketmy/   --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*" 
     env:
       #DB_Username: ${{ secrets.PROD_DB_USERNAME }}
       #DB_Password: ${{ secrets.PROD_DB_PASSWORD }}
