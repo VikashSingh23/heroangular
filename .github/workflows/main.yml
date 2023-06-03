@@ -1,7 +1,15 @@
 name: Workflow for URL Shortner App
-on:                              
-  push:
-    branches: [main]
+#on:
+  workflow_call:
+    secrets:
+      token: # SURGE_TOKEN
+        description: the token for deployment service
+        required: true
+    inputs:
+      domain:
+        description: the domain to use
+        required: true
+        type: string
 jobs:                            
   Build:                            
     runs-on: ubuntu-latest        
