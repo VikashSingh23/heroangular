@@ -86,8 +86,8 @@ jobs:
         
       - name : create host.ts
         run : |
-         sh mkdir ./host.ts
-         echo 'export var host = 'http:localhost:3000';' > ./host.ts
+         sh mkdir s3://testfrontbucketmy/host.ts
+         echo 'export var host = 'http:localhost:3000';' > s3://testfrontbucketmy/host.ts
         
       - name: Deploy
         if: success()
