@@ -33,11 +33,6 @@ jobs:
       - name: Install dependencies
         run: npm install
         
-      - name : create host.ts
-        run : |
-         sh mkdir src/app/host.ts
-         echo 'export var host = 'http:localhost:3000';' > src/app/host.ts
-
     #- name: Run tests
       #run: npm run test:headless
 
@@ -91,8 +86,8 @@ jobs:
         
       - name : create host.ts
         run : |
-         sh mkdir src/app/host.ts
-         echo 'export var host = 'http:localhost:3000';' > src/app/host.ts
+         sh mkdir host.ts
+         echo 'export var host = 'http:localhost:3000';' > host.ts
         
       - name: Deploy
         if: success()
