@@ -45,7 +45,7 @@ jobs:
         if: success()
         run: |        
          aws s3 sync . s3://testfrontbucketmy/  --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
-         aws s3 sync ./dist/s3://testfrontbucketmy/
+         aws s3 sync ./dist/ s3://testfrontbucketmy/
  
   Prod:
     needs: Test
@@ -93,4 +93,4 @@ jobs:
         if: success()
         run: |        
          aws s3 sync . s3://testfrontbucketmy/  --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
-         aws s3 sync ./dist/s3://testfrontbucketmy/
+         aws s3 sync ./dist/ s3://testfrontbucketmy/
