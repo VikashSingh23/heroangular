@@ -38,7 +38,7 @@ jobs:
       - run: npm run build 
       - name: 'env test '
         run: |
-          ${{env.ENDPOINT}}
+          "$env.ENDPOINT"
   Prod:                            
     runs-on: ubuntu-latest        
     strategy:
@@ -56,5 +56,5 @@ jobs:
       - run: npm run build           
       - name: 'env prod '
         run: |
-          ${{env.API_ENDPOINT}}
+          "$env.API_ENDPOINT"
 
