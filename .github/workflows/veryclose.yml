@@ -1,0 +1,96 @@
+name: AWS Zip
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  Test:
+    name: Build For Test
+    runs-on: ubuntu-latest
+    environment:
+      name: Development
+      
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+         aws-region: ap-south-1
+          
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+         node-version: 16
+
+      - name: Install dependencies
+        run: npm install
+
+    #- name: Run tests
+      #run: npm run test:headless
+
+      - name: Build
+        run: npm run build        
+      - name: Zip Folder 
+        run: zip -jpr dist.zip dist/
+        
+      - name: Deploy
+        if: success()
+        run: |        
+         aws s3 sync . s3://testfrontbucketmy/  --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
+         aws s3 sync ./dist/s3://testfrontbucketmy/
+ 
+  Prod:
+ 
+    name: Build and Prod
+    runs-on: ubuntu-latest
+    
+    environment:
+      name: Development
+      
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+         aws-region: ap-south-1
+          
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+         node-version: 16
+
+      - name: Install dependencies
+        run: npm install
+         
+    #- name: Run tests
+      #run: npm run test:headless
+
+      - name: Build
+        run: npm run build        
+      - name: Zip Folder 
+        run: zip -jpr dist.zip dist/
+        
+      - name : create host.ts
+        run : |
+         sh mkdir src/app/host.ts
+         echo 'export var host = 'http:localhost:3000';' > src/app/host.ts
+        
+      - name: Deploy
+        if: success()
+        run: |        
+         aws s3 sync . s3://testfrontbucketmy/  --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
+         aws s3 sync ./dist/s3://testfrontbucketmy/
