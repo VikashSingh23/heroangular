@@ -21,7 +21,8 @@ jobs:
       - name: Install dependencies
         run: npm install
                           
-  Test:                            
+  Test:
+    needs: build
     runs-on: ubuntu-latest        
     strategy:
       matrix:
@@ -38,8 +39,9 @@ jobs:
       - run: npm run build 
       - name: 'env test '
         run: |
-          "$env.ENDPOINT"
-  Prod:                            
+          "$ENDPOINT"
+  Prod:
+    needs: Test
     runs-on: ubuntu-latest        
     strategy:
       matrix:
@@ -56,5 +58,5 @@ jobs:
       - run: npm run build           
       - name: 'env prod '
         run: |
-          "$env.API_ENDPOINT"
+          "$API_ENDPOINT"
 
