@@ -38,7 +38,7 @@ jobs:
       - run: npm run build 
       - name: 'env test '
         run: |
-          ENDPOINT="https://xxx.execute-api.us-west-2.amazonaws.com" >> .env
+          ENDPOINT="http://127.0.0.1:8080" >> .env
 
   Prod:                            
     runs-on: ubuntu-latest        
@@ -57,5 +57,5 @@ jobs:
       - run: npm run build           
       - name: 'env prod '
         run: |
-          API_ENDPOINT="https://xxx.execute-api.us-west-2.amazonaws.com" >> .env
+          API_ENDPOINT="http://127.0.0.1:8080" >> .env
 
