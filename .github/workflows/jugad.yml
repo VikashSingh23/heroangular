@@ -38,8 +38,7 @@ jobs:
       - run: npm run build 
       - name: 'env test '
         run: |
-          ENDPOINT="http://127.0.0.1:8080" >> .env
-
+          $ENDPOINT
   Prod:                            
     runs-on: ubuntu-latest        
     strategy:
@@ -57,5 +56,5 @@ jobs:
       - run: npm run build           
       - name: 'env prod '
         run: |
-          API_ENDPOINT="http://127.0.0.1:8080" >> .env
+          $API_ENDPOINT
 
