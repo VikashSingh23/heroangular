@@ -20,15 +20,44 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
-
-      - name: 'env tset '
+                          
+  Test:                            
+    runs-on: ubuntu-latest        
+    strategy:
+      matrix:
+        node-version: [16.x]
+    environment:
+      name: Development 
+    steps:
+      - uses: actions/checkout@v2 
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install          
+      - run: npm run build 
+      - name: 'env test '
         run: |
           API_ENDPOINT="https://xxx.execute-api.us-west-2.amazonaws.com" >> .env
           API_KEY=${{ secrets.API_KEY }} >> .env
-          cat .env
-      - name: 'env tset '
+
+  Prod:                            
+    runs-on: ubuntu-latest        
+    strategy:
+      matrix:
+        node-version: [16.x]
+    environment:
+      name: Production 
+    steps:
+      - uses: actions/checkout@v2 
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install          
+      - run: npm run build           
+      - name: 'env prod '
         run: |
           API_ENDPOINT="https://xxx.execute-api1.us-west-2.amazonaws.com" >> .env
           API_KEY=${{ secrets.API_KEY }} >> .env
-          cat .env
+
