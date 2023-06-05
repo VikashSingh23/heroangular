@@ -40,6 +40,9 @@ jobs:
       - name: 'env test '
         run: |
           $ENDPOINT
+          touch .env
+          ENDPOINT="https://ec2-13-233-84-209.ap-south-1.compute.amazonaws.com" >> .env
+          cat .env
   Prod:
     needs: Test
     runs-on: ubuntu-latest        
