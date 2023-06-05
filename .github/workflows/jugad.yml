@@ -22,9 +22,13 @@ jobs:
         run: npm install
 
 
-      - name: 'Create env file'
+      - name: 'env tset '
         run: |
-          touch .env
           API_ENDPOINT="https://xxx.execute-api.us-west-2.amazonaws.com" >> .env
+          API_KEY=${{ secrets.API_KEY }} >> .env
+          cat .env
+      - name: 'env tset '
+        run: |
+          API_ENDPOINT="https://xxx.execute-api1.us-west-2.amazonaws.com" >> .env
           API_KEY=${{ secrets.API_KEY }} >> .env
           cat .env
