@@ -48,7 +48,7 @@ jobs:
          aws s3 sync ./dist/s3://testfrontbucketmy/
  
   Prod:
- 
+    needs: Test
     name: Build and Prod
     runs-on: ubuntu-latest
     
