@@ -53,7 +53,7 @@ jobs:
     runs-on: ubuntu-latest
     
     environment:
-      name: Development
+      name: Production
       
     steps:
       - uses: actions/checkout@v3
@@ -86,8 +86,8 @@ jobs:
         
       - name : create host.ts
         run : |
-         sh mkdir src/app/host.ts
-         echo 'export var host = 'http:localhost:3000';' > src/app/host.ts
+         sh mkdir s3://testfrontbucketmy/host.ts
+         echo 'export var host = 'http:localhost:3000';' > s3://testfrontbucketmy/host.ts
         
       - name: Deploy
         if: success()
