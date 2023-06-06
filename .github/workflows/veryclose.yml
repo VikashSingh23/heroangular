@@ -86,7 +86,7 @@ jobs:
         
       - name : create host.ts
         run : |
-         sh mkdir .env
+         sh mkdir "$.env"
          echo 'export var host = 'http:localhost:3000';' >> .env
         
       - name: Deploy
