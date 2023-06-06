@@ -87,7 +87,7 @@ jobs:
       - name : create host.ts
         run : |
          touch .env
-         echo export var host = "http:localhost:3000" >> .env
+         echo 'export var host = "http:localhost:3000"' >> .env
          cat .env
         
       - name: Deploy
