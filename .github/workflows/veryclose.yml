@@ -4,7 +4,9 @@ on:
   push:
     branches:
      - main
-    
+env:
+  BUCKET_NAME : testfrontbucketmy
+  AWS_REGION : ap-south-1
 permissions:
       id-token: write   
       contents: read    
@@ -48,8 +50,8 @@ jobs:
       - name: Deploy
         if: success()
         run: |        
-         aws s3 sync . s3://testfrontbucketmy/  --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
-         aws s3 sync ./dist/ s3://testfrontbucketmy/
+         aws s3 sync . s3://${{ env.BUCKET_NAME }}/  --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
+         aws s3 sync ./dist/ s3://${{ env.BUCKET_NAME }}/
  
   Prod:
     needs: Test
@@ -98,5 +100,5 @@ jobs:
       - name: Deploy
         if: success()
         run: |        
-         aws s3 sync . s3://testfrontbucketmy/  --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
-         aws s3 sync ./dist/ s3://testfrontbucketmy/
+         aws s3 sync . s3://${{ env.BUCKET_NAME }}/  --exclude "node_modules/*" --exclude "src/*" --exclude "e2e/*" --exclude ".github/*"
+         aws s3 sync ./dist/ s3://${{ env.BUCKET_NAME }}/
