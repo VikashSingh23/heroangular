@@ -23,7 +23,7 @@ jobs:
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::426707758245:role/OpenIDConnection
+          role-to-assume: arn:aws:iam::648821256272:role/Github-Action-Role
           role-session-name: GitHub-Action-Role
           aws-region: ap-south-1
           
