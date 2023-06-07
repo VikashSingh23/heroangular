@@ -1,6 +1,6 @@
 name: AWS Deploy
 
-#on:
+on:
   push:
     branches:
      - main  
@@ -88,8 +88,8 @@ jobs:
       - name : create host.ts
         run : |
          #touch .env
-         cat > .env
-         echo 'export var host = "http:localhost:3000"' >> .env
+         cat > host.ts
+         echo 'export var host = "http:localhost:3000"' >> ./src/app/host.ts
 
         
       - name: Deploy
