@@ -4,10 +4,7 @@ on:
   push:
     branches:
      - main  
-permissions:
-      id-token: write   
-      contents: read    
-      
+
 jobs:
   Test:
     name: Build For Test
@@ -22,8 +19,8 @@ jobs:
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::648821256272:role/Github-Action-Role
-          role-session-name: Github-Action-Role
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
           
       - name: Checkout
@@ -65,8 +62,8 @@ jobs:
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::648821256272:role/Github-Action-Role
-          role-session-name: Github-Action-Role
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
           
       - name: Checkout
