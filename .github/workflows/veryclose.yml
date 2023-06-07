@@ -43,11 +43,10 @@ jobs:
         run: zip -jpr dist.zip dist/
         
         
-    #  - name : create host.ts
-     #   run : |
-      #   touch ./src/app/host.ts
-       #  echo 'export var host = "http:localhost:3000"' >> ./src/app/host.ts   
-        # cat > ./src/app/host.ts  
+      - name : create host.ts
+        run : |
+         cat > src/app/host.ts
+         echo 'export var host = "http:localhost:3000"' >> src/app/host.ts   
          
       - name: Deploy
         if: success()
