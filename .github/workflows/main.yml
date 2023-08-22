@@ -1,5 +1,5 @@
 name: Workflow for URL Shortner App
-#on:
+on:
   workflow_call:
     secrets:
       token: # SURGE_TOKEN
